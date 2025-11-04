@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Driver Drowsiness Detection System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            animation: {
+              "pulse-slow": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              "bounce-slow": "bounce 2s infinite",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @keyframes gradient {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+      .gradient-bg {
+        background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+      }
+      .dark .gradient-bg {
+        background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #533483);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-all duration-500"
+  >
+   
+    <!-- Dark Mode Toggle -->
+    <div class="fixed top-4 right-4 z-50">
+      <button
+        id="darkModeToggle"
+        class="bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 border border-gray-200 dark:border-gray-700"
+      >
+        <svg
+          class="w-6 h-6 text-yellow-500 dark:hidden"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+        <svg
+          class="w-6 h-6 text-blue-400 hidden dark:block"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+          ></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="container mx-auto px-4 py-6 max-w-7xl">
+      <!-- Header Section -->
+      <div
+        class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl mb-8 overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-300"
+      >
+        <div class="gradient-bg p-8">
+          <h1
+            class="text-4xl md:text-5xl font-bold text-white text-center mb-8 drop-shadow-lg"
+          >
+            🚗 Driver Drowsiness Detection System
+          </h1>
+
+          <!-- Project Details Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div
+              class="bg-white/20 backdrop-blur-sm rounded-xl p-6 hover:bg-white/30 transition-all duration-300 hover:scale-105 border border-white/10"
+            >
+              <div class="text-white/80 text-sm font-medium">Course Name</div>
+              <div class="text-white text-xl font-bold">Computer Vision</div>
+            </div>
+
+            <div
+              class="bg-white/20 backdrop-blur-sm rounded-xl p-6 hover:bg-white/30 transition-all duration-300 hover:scale-105 border border-white/10"
+            >
+              <div class="text-white/80 text-sm font-medium">Course Code</div>
+              <div class="text-white text-xl font-bold">UCSC316L</div>
+            </div>
+
+            <div
+              class="bg-white/20 backdrop-blur-sm rounded-xl p-6 hover:bg-white/30 transition-all duration-300 hover:scale-105 border border-white/10"
+            >
+              <div class="text-white/80 text-sm font-medium">Project Guide</div>
+              <div class="text-white text-xl font-bold">
+                Dr. P Shunmuga Perumal
+              </div>
+            </div>
+          </div>
+
+          <!-- Team Members -->
+          <div
+            class="bg-white/20 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+          >
+            <div class="text-white/80 text-sm font-medium mb-4">
+              Team Members
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div
+                class="text-white font-semibold hover:text-yellow-200 transition-colors duration-300 cursor-pointer"
+              >
+                👨‍💻 Harsh Kawale (23BCA0053)
+              </div>
+              <div
+                class="text-white font-semibold hover:text-yellow-200 transition-colors duration-300 cursor-pointer"
+              >
+                👩‍💻 Kavya Yadav (23BCS0015)
+              </div>
+              <div
+                class="text-white font-semibold hover:text-yellow-200 transition-colors duration-300 cursor-pointer"
+              >
+                👩‍💻 Sneha Paul (23BCS0067)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Grid -->
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+        <!-- Video Section -->
+        <div class="xl:col-span-2">
+          <div
+            class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 h-fit border border-gray-200 dark:border-gray-700 transition-all duration-300"
+          >
+            <h2
+              class="text-2xl font-bold text-gray-800 dark:text-white mb-6 flex items-center"
+            >
+              📹 <span class="ml-2">Camera Feed</span>
+            </h2>
+
+            <div class="relative mb-6 group">
+              <div
+                class="bg-gray-900 dark:bg-gray-950 rounded-xl overflow-hidden shadow-2xl relative border border-gray-700"
+              >
+                <img
+                  id="videoFeed"
+                  src=""
+                  class="w-full h-auto max-h-96 object-cover transition-all duration-300 group-hover:scale-105"
+                  style="aspect-ratio: 4/3"
+                />
+
+                <div
+                  class="video-overlay absolute inset-0 bg-gray-900/80 dark:bg-gray-950/90 flex flex-col items-center justify-center text-white transition-all duration-300"
+                  id="videoOverlay"
+                >
+                  <div class="text-4xl mb-4 animate-bounce-slow">📷</div>
+                  <div class="text-xl font-semibold mb-2">Camera Feed</div>
+                  <div class="text-sm opacity-75">
+                    Click "Start Detection" to begin
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex flex-wrap gap-4 justify-center">
+              <button class="btn-start group" id="startBtn">
+                <span
+                  class="mr-2 group-hover:animate-bounce-slow transition-all duration-300"
+                  >▶</span
+                >
+                <span
+                  class="group-hover:tracking-wide transition-all duration-300"
+                  >Start Detection</span
+                >
+              </button>
+              <button class="btn-stop group" id="stopBtn" disabled>
+                <span
+                  class="mr-2 group-hover:animate-pulse transition-all duration-300"
+                  >⏹</span
+                >
+                <span
+                  class="group-hover:tracking-wide transition-all duration-300"
+                  >Stop Detection</span
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status Section -->
+        <div class="xl:col-span-1">
+          <div
+            class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border border-gray-200 dark:border-gray-700 transition-all duration-300"
+          >
+            <h2
+              class="text-2xl font-bold text-gray-800 dark:text-white mb-6 flex items-center"
+            >
+              📊 <span class="ml-2">Detection Status</span>
+            </h2>
+
+            <!-- Alert Message -->
+            <div
+              id="alertMessage"
+              class="alert-message mb-6"
+              style="display: none"
+            >
+              <div
+                class="bg-gradient-to-r from-red-500 to-red-600 text-white p-4 rounded-xl shadow-lg animate-pulse-slow border border-red-400"
+              >
+                <div class="flex items-center">
+                  <span class="text-2xl mr-3 animate-bounce-slow">🚨</span>
+                  <div>
+                    <div class="font-bold text-lg">DROWSINESS DETECTED!</div>
+                    <div class="text-sm opacity-90">
+                      Please take a break immediately!
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Status Cards -->
+            <div class="space-y-4">
+              <div
+                class="status-card group hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer"
+              >
+                <div
+                  class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-xl p-6 text-white shadow-lg border border-blue-400/20"
+                >
+                  <div
+                    class="text-3xl font-bold mb-2 group-hover:animate-pulse group-hover:scale-110 transition-all duration-300"
+                    id="status-text"
+                  >
+                    Waiting...
+                  </div>
+                  <div
+                    class="text-sm opacity-90 group-hover:opacity-100 transition-all duration-300"
+                  >
+                    Overall Status
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="status-card group hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer"
+              >
+                <div
+                  class="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 rounded-xl p-6 text-white shadow-lg border border-green-400/20"
+                >
+                  <div
+                    class="text-3xl font-bold mb-2 group-hover:animate-pulse group-hover:scale-110 transition-all duration-300"
+                    id="yawn-text"
+                  >
+                    No Yawn
+                  </div>
+                  <div
+                    class="text-sm opacity-90 group-hover:opacity-100 transition-all duration-300"
+                  >
+                    Yawn Status
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="status-card group hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer"
+              >
+                <div
+                  class="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 rounded-xl p-6 text-white shadow-lg border border-orange-400/20"
+                >
+                  <div
+                    class="text-3xl font-bold mb-2 group-hover:animate-pulse group-hover:scale-110 transition-all duration-300"
+                    id="eyes-text"
+                  >
+                    Unknown
+                  </div>
+                  <div
+                    class="text-sm opacity-90 group-hover:opacity-100 transition-all duration-300"
+                  >
+                    Eyes Status
+                  </div>
+                </div>
+              </div>
+              <div
+                class="status-card group hover:shadow-lg transition-all duration-300 hover:scale-105"
+              >
+                <div
+                  class="bg-gradient-to-r from-fuchsia-500 to-purple-600 rounded-xl p-6 text-white"
+                >
+                  <div class="text-3xl font-bold mb-2" id="yawn-count-text">
+                    0
+                  </div>
+                  <div class="text-sm opacity-90">Yawn Count</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Dark mode functionality
+      const darkModeToggle = document.getElementById("darkModeToggle");
+      const htmlElement = document.documentElement;
+
+      // Check for saved theme preference or default to light mode
+      const currentTheme = localStorage.getItem("theme") || "light";
+      if (currentTheme === "dark") {
+        htmlElement.classList.add("dark");
+      }
+
+      darkModeToggle.addEventListener("click", () => {
+        htmlElement.classList.toggle("dark");
+
+        // Save theme preference
+        if (htmlElement.classList.contains("dark")) {
+          localStorage.setItem("theme", "dark");
+        } else {
+          localStorage.setItem("theme", "light");
+        }
+      });
+
+      function updateDetectionStatus() {
+        fetch("/detection_status")
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("status-text").innerText = data.status;
+            document.getElementById("yawn-text").innerText = data.yawn_state;
+            document.getElementById("eyes-text").innerText = data.eye_state;
+            const yawnCountEl = document.getElementById("yawn-count-text");
+            if (yawnCountEl && typeof data.yawn_count !== "undefined") {
+              yawnCountEl.innerText = data.yawn_count;
+            }
+            
+            // Optional alert display
+            const alertBox = document.getElementById("alertMessage");
+            if (data.status === "DROWSY" || data.status === "YAWNING") {
+              alertBox.style.display = "block";
+            } else {
+              alertBox.style.display = "none";
+            }
+          });
+      }
+
+      setInterval(updateDetectionStatus, 1000);
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const startBtn = document.getElementById("startBtn");
+        const stopBtn = document.getElementById("stopBtn");
+        const videoFeed = document.getElementById("videoFeed");
+        const videoOverlay = document.getElementById("videoOverlay");
+
+        startBtn.addEventListener("click", () => {
+          videoOverlay.style.display = "none";
+          videoFeed.src = "/start";
+          startBtn.disabled = true;
+          stopBtn.disabled = false;
+        });
+
+        stopBtn.addEventListener("click", () => {
+          videoFeed.src = "";
+          fetch("/stop", { method: "POST" });
+          startBtn.disabled = false;
+          stopBtn.disabled = true;
+          videoOverlay.style.display = "flex";
+        });
+      });
+    </script>
+
+    <style>
+      .btn-start {
+        @apply bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-110 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 border border-green-400/30 hover:border-green-300/50;
+      }
+
+      .btn-stop {
+        @apply bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-110 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 border border-red-400/30 hover:border-red-300/50;
+      }
+    </style>
+  </body>
+</html>
